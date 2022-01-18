@@ -1,6 +1,5 @@
 from distutils.command.upload import upload
 from email.mime import image
-from itertools import product
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
