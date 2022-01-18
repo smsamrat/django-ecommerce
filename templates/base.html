@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     {% load static %}
+    {% load category %}
 <!-- molla/index-4.html  22 Nov 2019 09:53:08 GMT -->
 <head>
     <meta charset="UTF-8">
@@ -224,17 +225,21 @@
                             <div class="dropdown-menu">
                                 <nav class="side-nav">
                                     <ul class="menu-vertical sf-arrows">
-                                        <li class="item-lead"><a href="#">Daily offers</a></li>
-                                        <li class="item-lead"><a href="#">Gift Ideas</a></li>
-                                        <li><a href="#">Beds</a></li>
-                                        <li><a href="#">Lighting</a></li>
-                                        <li><a href="#">Sofas & Sleeper sofas</a></li>
-                                        <li><a href="#">Storage</a></li>
-                                        <li><a href="#">Armchairs & Chaises</a></li>
-                                        <li><a href="#">Decoration </a></li>
-                                        <li><a href="#">Kitchen Cabinets</a></li>
-                                        <li><a href="#">Coffee & Tables</a></li>
-                                        <li><a href="#">Outdoor Furniture </a></li>
+                                        {% for cat in request.user|category %}
+                                        {% if not cat.children.all %}
+                                        <li class="item-lead"><a href="#">{{cat.name}}</a></li>
+                                        {% else %}
+                                        <li class="item-lead"><a href="#">{{cat.name}}</a>
+                                            <ul>
+                                                {% for subcategory in cat.children.all %}
+                                                <li>
+                                                    <a href="#">{{subcategory}}</a>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+                                        {% endfor %}
                                     </ul><!-- End .menu-vertical -->
                                 </nav><!-- End .side-nav -->
                             </div><!-- End .dropdown-menu -->
