@@ -20,6 +20,7 @@ class Cart(models.Model):
         float_total = float(total,'0.2f')
         return float_total
     
+    
 class order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
     orders_item = models.ManyToManyField(Cart)

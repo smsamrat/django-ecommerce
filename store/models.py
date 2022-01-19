@@ -1,8 +1,10 @@
 from distutils.command.upload import upload
 from email.mime import image
+from random import randint
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+import random
 
 # Create your models here.
 
@@ -43,7 +45,8 @@ class Product(models.Model):
     
     def get_absolute_url(self):
         return reverse('product_details', kwargs={'slug': self.slug})
-
+    
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
