@@ -2,6 +2,7 @@
 <html lang="en">
     {% load static %}
     {% load category %}
+    {% load cart %}
 <!-- molla/index-4.html  22 Nov 2019 09:53:08 GMT -->
 <head>
     <meta charset="UTF-8">
@@ -150,58 +151,50 @@
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
+                                    {% if request.user.is_authenticated %}
+                                    <span class="cart-count">{{request.user|cart_count}}</span>
+                                    {% else %}
+                                    <span class="cart-count">{{request.user|cart_count}}</span>
+                                    {% endif %}
                                 </div>
                                 <p>Cart</p>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products">
+                                    {% if request.user.is_authenticated %}
+                                    {% for cart in request.user|cart_view %}
                                     <div class="product">
                                         <div class="product-cart-details">
                                             <h4 class="product-title">
-                                                <a href="product.html">Beige knitted elastic runner shoes</a>
+                                                <a href="product.html">{{cart.cart_item.name}}</a>
                                             </h4>
 
                                             <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $84.00
+                                                <span class="cart-product-qty">{{cart.quantity}}</span>
+                                                x ${{cart.get_cart_item_total}}
                                             </span>
                                         </div><!-- End .product-cart-details -->
 
                                         <figure class="product-image-container">
                                             <a href="product.html" class="product-image">
-                                                <img src="{% static 'assets/images/products/cart/product-1.jpg'%}" alt="product">
+                                                <img src="{{cart.cart_item.image.url}}" alt="product">
                                             </a>
                                         </figure>
                                         <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                     </div><!-- End .product -->
-
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Blue utility pinafore denim dress</a>
-                                            </h4>
-
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $76.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="{% static 'assets/images/products/cart/product-2.jpg'%}" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
+                                    {% endfor %}
+                                    {% endif %}
+  
                                 </div><!-- End .cart-product -->
 
                                 <div class="dropdown-cart-total">
                                     <span>Total</span>
-
-                                    <span class="cart-total-price">$160.00</span>
+                                    {% if request.user.is_authenticated %}
+                                    <span class="cart-total-price">{{request.user|total_cart_price}}</span>
+                                    {% else %}
+                                    <span class="cart-total-price">{{request.user|total_cart_price}}</span>
+                                    {% endif %}
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
