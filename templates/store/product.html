@@ -52,38 +52,35 @@
                                     {% endif %}
                                     
                                     <!-- End .product-price -->
-
-                                    <div class="product-content">
-                                        <p>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing. Sed lectus. </p>
-                                    </div><!-- End .product-content -->
-
+                                    {% if item.product_variationvalue_set.colors %}
                                     <div class="details-filter-row details-row-size">
-                                        <label>Color:</label>
+                                        <label for="color">Color:</label>
+                                        <div class="select-custom">
+                                            <select name="color" id="size" class="form-control">
+                                                <option value="#" selected="selected">Select a size</option>
+                                                {% for  product_variation in item.product_variationvalue_set.colors %}
+                                                <option name='color' value="{{product_variation.name}}">{{product_variation.name}}</option>
+                                                {% endfor %}
 
-                                        <div class="product-nav product-nav-thumbs">
-                                            <a href="#" class="active">
-                                                <img src="assets/images/products/single/1-thumb.jpg" alt="product desc">
-                                            </a>
-                                            <a href="#">
-                                                <img src="assets/images/products/single/2-thumb.jpg" alt="product desc">
-                                            </a>
-                                        </div><!-- End .product-nav -->
+                                            </select>
+                                        </div><!-- End .select-custom -->
                                     </div><!-- End .details-filter-row -->
+                                    {% endif %}
 
+                                    {% if item.product_variationvalue_set.sizes %}
                                     <div class="details-filter-row details-row-size">
                                         <label for="size">Size:</label>
                                         <div class="select-custom">
                                             <select name="size" id="size" class="form-control">
                                                 <option value="#" selected="selected">Select a size</option>
-                                                <option value="s">Small</option>
-                                                <option value="m">Medium</option>
-                                                <option value="l">Large</option>
-                                                <option value="xl">Extra Large</option>
+                                                {% for  product_variation in item.product_variationvalue_set.sizes %}
+                                                <option name='size' value="{{product_variation.name}}">{{product_variation.name}}</option>
+                                                {% endfor %}
+
                                             </select>
                                         </div><!-- End .select-custom -->
-
-                                        <a href="#" class="size-guide"><i class="icon-th-list"></i>size guide</a>
                                     </div><!-- End .details-filter-row -->
+                                    {% endif %}
 
                                     <div class="details-filter-row details-row-size">
                                         <label for="qty">Qty:</label>
