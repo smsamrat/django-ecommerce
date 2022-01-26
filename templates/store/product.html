@@ -50,7 +50,6 @@
                                     </div>
 
                                     {% endif %}
-                                    
                                     <!-- End .product-price -->
                                     <form method="post" action="{% url 'add-to-cart' pk=item.pk %}">
                                         {% csrf_token %}
