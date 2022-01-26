@@ -13,10 +13,22 @@ def add_to_cart(request, pk):
     if order_qs.exists():
         orders = order_qs[0]
         if orders.orders_item.filter(cart_item=item).exists():
-            cart_order_item[0].quantity += 1
+            size = request.POST.get('size')
+            color = request.POST.get('color')
+            quantity = request.POST.get('quantity')
+            if quantity:
+                cart_order_item[0].quantity += int(quantity)
+            else:
+                cart_order_item[0].quantity += 1
+            cart_order_item[0].size = size
+            cart_order_item[0].color = color
             cart_order_item[0].save()
             return redirect('index')
         else:
+            size = request.POST.get('size')
+            color = request.POST.get('color')
+            cart_order_item[0].size = size
+            cart_order_item[0].color = color
             orders.orders_item.add(cart_order_item[0])
             return redirect('index')
     else:
