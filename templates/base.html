@@ -154,7 +154,7 @@
                                     {% if request.user.is_authenticated %}
                                     <span class="cart-count">{{request.user|cart_count}}</span>
                                     {% else %}
-                                    <span class="cart-count">{{request.user|cart_count}}</span>
+                                    <span class="cart-count">0</span>
                                     {% endif %}
                                 </div>
                                 <p>Cart</p>
@@ -163,7 +163,8 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products">
                                     {% if request.user.is_authenticated %}
-                                    {% for cart in request.user|cart_view %}
+                                        {% if request.user|cart_view %}
+                                            {% for cart in request.user|cart_view %}
                                     <div class="product">
                                         <div class="product-cart-details">
                                             <h4 class="product-title">
@@ -183,7 +184,8 @@
                                         </figure>
                                         <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                     </div><!-- End .product -->
-                                    {% endfor %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
   
                                 </div><!-- End .cart-product -->
@@ -193,7 +195,7 @@
                                     {% if request.user.is_authenticated %}
                                     <span class="cart-total-price">{{request.user|total_cart_price}}</span>
                                     {% else %}
-                                    <span class="cart-total-price">{{request.user|total_cart_price}}</span>
+                                    <span class="cart-total-price">0</span>
                                     {% endif %}
                                 </div><!-- End .dropdown-cart-total -->
 

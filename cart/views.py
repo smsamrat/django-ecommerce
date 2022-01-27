@@ -49,3 +49,20 @@ def cartView(request):
             'ordered':ordered
         }
     return render(request, 'store/cart.html',context)
+
+def cart_item_remove(request, pk):
+    item = get_object_or_404(Product, pk=pk)
+    orders = order.objects.filter(user=request.user, ordered=False)
+    if orders.exists():
+        ordered = orders[0]
+        if ordered.orders_item.filter(cart_item=item).exists():
+            order_item = Cart.objects.filter(cart_item=item, user=request.user, purchased=False)[0]
+            ordered.orders_item.remove(order_item)
+            order_item.delete()
+            return redirect('cart')
+        else:
+            return redirect('cart')
+    else:
+        return redirect('cart')
+
+
