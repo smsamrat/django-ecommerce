@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template import context
 from store.models import Product
 from cart.models import Cart, order
 
@@ -38,4 +39,13 @@ def add_to_cart(request, pk):
         return redirect('index')
         
             
-    
+def cartView(request):
+    carts = Cart.objects.filter(user=request.user, purchased=False) 
+    orders = order.objects.filter(user=request.user, ordered=False) 
+    if carts.exists() and orders.exists():
+        ordered = orders[0]
+        context ={
+            'carts':carts,
+            'ordered':ordered
+        }
+    return render(request, 'store/cart.html',context)
