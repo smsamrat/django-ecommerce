@@ -66,3 +66,45 @@ def cart_item_remove(request, pk):
         return redirect('cart')
 
 
+def cart_item_increase(request, pk):
+    item = get_object_or_404(Product, pk=pk)
+    order_qus = order.objects.filter(user=request.user, ordered=False)
+    if order_qus.exists():
+        ordered = order_qus[0]
+        if ordered.orders_item.filter(cart_item=item).exists():
+            order_item = Cart.objects.filter(cart_item=item, user=request.user, purchased=False)[0]
+            if order_item.quantity >=1:
+                order_item.quantity += 1
+                order_item.save()
+                return redirect('cart')
+            else:
+                return redirect('cart')
+        else:
+            return redirect('cart')
+    else:
+        return redirect('index')
+
+
+def cart_item_decrease(request, pk):
+    item = get_object_or_404(Product, pk=pk)
+    order_qus = order.objects.filter(user=request.user, ordered=False)
+    if order_qus.exists():
+        ordered = order_qus[0]
+        if ordered.orders_item.filter(cart_item=item).exists():
+            order_item = Cart.objects.filter(cart_item=item, user=request.user, purchased=False)[0]
+            if order_item.quantity > 1:
+                order_item.quantity -= 1
+                order_item.save()
+                return redirect('cart')
+            else:
+                ordered.orders_item.remove(order_item)
+                order_item.delete()
+                return redirect('cart')
+        else:
+            return redirect('cart')
+    else:
+        return redirect('index')
+
+
+
+
