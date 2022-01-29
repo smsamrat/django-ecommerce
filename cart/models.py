@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from store.models import Product
+from store.models import Product, Product_variationValue
 
 # Create your models here.
 
@@ -22,6 +22,48 @@ class Cart(models.Model):
         float_total = format(total,'0.2f')
         return float_total
     
+    def variation_single_price(self):
+        sizes = Product_variationValue.objects.filter(variation='size', product=self.cart_item)
+        colors = Product_variationValue.objects.filter(variation='color', product=self.cart_item)
+        for size in sizes:
+            if colors.exists():
+                for color in colors:
+                    if color.name == self.color:
+                        c_price = color.price
+                if size.name == self.size:
+                    total = size.price + c_price
+                    net_price = total
+                    float_total = format(net_price, '0.2f')
+                    return float_total
+            else:
+                if size.name == self.size:
+                    total = size.price
+                    float_total = format(total, '0.2f')
+                    return float_total
+
+    def variation_total(self):
+        sizes = Product_variationValue.objects.filter(variation='size', product=self.cart_item)
+        colors = Product_variationValue.objects.filter(variation='color', product=self.cart_item)
+        for size in sizes:
+            if colors.exists():
+                for color in colors:
+                    if color.name == self.color:
+                        c_price = color.price
+                        total_quantity_price = c_price * self.quantity
+                if size.name == self.size:
+                    total = size.price * self.quantity
+                    net_total = total + total_quantity_price
+                    float_total = format(net_total, '0.2f')
+                    return float_total
+            else:
+                if size.name == self.size:
+                    total = size.price * self.quantity
+                    float_total = format(total, '0.2f')
+                    return float_total
+
+
+
+
     
 class order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
