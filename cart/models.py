@@ -61,6 +61,28 @@ class Cart(models.Model):
                     float_total = format(total, '0.2f')
                     return float_total
 
+    def total_product_price(self):
+        total_cart_item = self.cart_item.price * self.quantity
+        sizes = Product_variationValue.objects.filter(variation='size', product=self.cart_item)
+        colors = Product_variationValue.objects.filter(variation='color', product=self.cart_item)
+        for size in sizes:
+            if colors.exists():
+                for color in colors:
+                    if color.name == self.color:
+                        c_price = color.price
+                        total_quantity_price = c_price * self.quantity
+                if size.name == self.size:
+                    total = size.price * self.quantity
+                    net_total = total + total_quantity_price
+                    total_price = net_total + total_cart_item
+                    float_total = format(total_price, '0.2f')
+                    return float_total
+            else:
+                if size.name == self.size:
+                    total = size.price * self.quantity
+                    total_price = total + total_cart_item
+                    float_total = format(total_price, '0.2f')
+                    return float_total
 
 
 
@@ -76,6 +98,15 @@ class order(models.Model):
     def order_item_total(self):
         total = 0
         for total_order_items in self.orders_item.all():
-            total += float(total_order_items.get_cart_item_total())
+            if total_order_items.total_product_price():
+                total += float(total_order_items.total_product_price())
+            # elif total_order_items.variation_total():
+            #     total += float(total_order_items.variation_total())
+            # elif total_order_items.variation_single_price():
+            #     total += float(total_order_items.variation_single_price())
+            else:
+                total += float(total_order_items.get_cart_item_total())
         return total
+
+        
     

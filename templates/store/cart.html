@@ -28,10 +28,11 @@
 											<th>Product</th>
 											<th>Size</th>
 											<th>Color</th>
-											<th>Price</th>
+											<th>V-P-Price</th>
+											<th>S-P-Price</th>
 											<th>Quantity</th>
-											<th>Total</th>
-											<th></th>
+											<th>Total-V-P</th>
+											<th>Total-p-C</th>
 										</tr>
 									</thead>
 
@@ -62,6 +63,12 @@
 												{% endif %}
 
 											</td>
+											<td class="price-col">
+												
+												${{cart.cart_item.price}}
+												
+
+											</td>
 
 											<td class="quantity-col">
                                                 <div class="cart-product-quantity">
@@ -77,8 +84,17 @@
 												{% if cart.variation_total %}
 													${{cart.variation_total}}
 												{% else %}
-													${{cart.get_cart_item_total}}
+													$0
 												{% endif %}
+											</td>
+
+											<td class="total-col">
+												{% if not cart.variation_total %}
+													${{cart.get_cart_item_total}}
+												{% else %}
+													${{cart.total_product_price}}
+												{% endif %}
+												
 											</td>
 
 											<td class="remove-col"><a href="{% url 'remove-cart' pk=cart.cart_item.pk %}"><button class="btn-remove"><i class="icon-close"></i></button></a></td>
