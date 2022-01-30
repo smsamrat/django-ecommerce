@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import context
 from store.models import Product
 from cart.models import Cart, order
+from coupon.models import Coupon
+from coupon.forms import CouponCodeForm
 
 # Create your views here.
 
@@ -44,9 +46,11 @@ def cartView(request):
     orders = order.objects.filter(user=request.user, ordered=False) 
     if carts.exists() and orders.exists():
         ordered = orders[0]
+        coupon_form = CouponCodeForm(request.POST)
         context ={
             'carts':carts,
-            'ordered':ordered
+            'ordered':ordered,
+            'coupon_form':coupon_form,
         }
     return render(request, 'store/cart.html',context)
 
