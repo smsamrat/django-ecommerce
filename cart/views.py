@@ -4,6 +4,7 @@ from store.models import Product
 from cart.models import Cart, order
 from coupon.models import Coupon
 from coupon.forms import CouponCodeForm
+from django.utils import timezone
 
 # Create your views here.
 
@@ -47,10 +48,24 @@ def cartView(request):
     if carts.exists() and orders.exists():
         ordered = orders[0]
         coupon_form = CouponCodeForm(request.POST)
+        if coupon_form.is_valid():
+            current_time = timezone.now()
+            code = coupon_form.cleaned_data.get('code')
+            coupon_obj = Coupon.objects.get(code=code)
+            if coupon_obj.valid_to >= current_time and coupon_obj.active == True:
+                get_discount = (coupon_obj.discount / 100)*ordered.order_item_total()
+                total_price_after_discount = ordered.order_item_total() - get_discount
+                request.session['discount_total'] = total_price_after_discount
+                request.session['coupon_code'] = code
+                return redirect('cart')
+        total_price_after_discount = request.session.get('discount_total')
+        code = request.session.get('coupon_code')
         context ={
             'carts':carts,
             'ordered':ordered,
             'coupon_form':coupon_form,
+            'total_price_after_discount':total_price_after_discount,
+            'coupon_code':code,
         }
     return render(request, 'store/cart.html',context)
 
