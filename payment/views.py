@@ -17,7 +17,7 @@ class CheckoutTemplateView(TemplateView):
         order_qs = order.objects.filter(user = request.user, ordered=False)
         order_item = order_qs[0].orders_item.all()
         order_totals = order_qs[0].order_item_total()
-        total_price_after_discount = order_qs[0].total_price_after_discount()
+
 
 
 
@@ -25,7 +25,6 @@ class CheckoutTemplateView(TemplateView):
             'billing_address':form,
             'order_item':order_item,
             'order_totals':order_totals,
-            'total_price_after_discount':total_price_after_discount,
         }
         return render(request, 'store/checkout.html',context)
 
