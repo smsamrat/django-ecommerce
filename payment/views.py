@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 
 from payment.models import BillingAddress
 from payment.forms import BillingAddressForm
+from payment.forms import PaymentMethod
 from cart.models import Cart, order
 
 from django.views.generic import TemplateView
@@ -18,13 +19,14 @@ class CheckoutTemplateView(TemplateView):
         order_item = order_qs[0].orders_item.all()
         order_totals = order_qs[0].order_item_total()
 
-
+        payment_method = PaymentMethod()
 
 
         context = {
             'billing_address':form,
             'order_item':order_item,
             'order_totals':order_totals,
+            'payment_method':payment_method
         }
         return render(request, 'store/checkout.html',context)
 
