@@ -10,7 +10,7 @@ def cart_view(user):
     if cart.exists():
         return cart
     else:
-        return ValueError('there are not cart added')
+        return cart
     
 @register.filter
 def total_cart_price(user):
