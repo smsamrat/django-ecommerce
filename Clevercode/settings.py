@@ -132,6 +132,9 @@ STATIC_ROOT=os.path.join(BASE_DIR,'static_root')
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media_root')
 
+PAYPAL_CLIENT_ID = "AdYGPNQHg-tB-cNVvXCoAEg_g2rmKjn5vhjlvj22l2t8HpxJd7N-hA4thSvfsHcemzLk3wA3DxWSapkj"
+PAYPAL_CLIENT_SECRET = "EP7cjGovkgNlx1OdMqKIE1ZCzehj5l84dnOCLjrbJPUY3u9k1kj8zv3Q1vGHOuSSgNqm3TYoOEFTIzIG"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

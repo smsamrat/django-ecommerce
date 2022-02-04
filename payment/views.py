@@ -9,6 +9,8 @@ from cart.models import Cart, order
 
 from django.views.generic import TemplateView
 
+from django.conf import settings
+
 class CheckoutTemplateView(TemplateView):
     def get(self, request, *args, **kwargs):
         save_address = BillingAddress.objects.get_or_create(user = request.user or None)
@@ -26,7 +28,8 @@ class CheckoutTemplateView(TemplateView):
             'billing_address':form,
             'order_item':order_item,
             'order_totals':order_totals,
-            'payment_method':payment_method
+            'payment_method':payment_method,
+            'paypal_client_id':settings.PAYPAL_CLIENT_ID 
         }
         return render(request, 'store/checkout.html',context)
 

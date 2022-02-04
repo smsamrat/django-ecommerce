@@ -87,6 +87,8 @@
 		                				<div class="accordion-summary" id="accordion-payment">
 										    <div class="card">
 												{{payment_method}}
+												<br>
+												<div id="paypal-button-container"></div>
 										        
 										    </div><!-- End .card -->
 										</div><!-- End .accordion -->
@@ -104,4 +106,27 @@
             </div><!-- End .page-content -->
         </main><!-- End .main -->
 
-        {% endblock body %}
+        {% endblock %}
+
+		{% block paypal %}
+
+		<script
+			src="https://www.paypal.com/sdk/js?client-id={{paypal_client_id}}">
+		</script>
+	
+	
+		<script>
+			paypal.Buttons({
+				createOrder: function(data, actions) {
+				// This function sets up the details of the transaction, including the amount and line item details.
+				return actions.order.create({
+					purchase_units: [{
+					amount: {
+						value:'{{order_totals}}'
+					}
+					}]
+				});
+				}	
+			}).render('#paypal-button-container');
+	</script>
+	{% endblock paypal %}
