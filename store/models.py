@@ -1,5 +1,6 @@
 from distutils.command.upload import upload
 from email.mime import image
+from operator import truediv
 from random import choices, randint
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -84,5 +85,13 @@ class Product_variationValue(models.Model):
     def __str__(self):
         return self.name
 
+class BannerImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='banners')
+    is_active = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.product.name
 
 

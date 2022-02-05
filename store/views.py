@@ -2,13 +2,18 @@ from django.http import request
 from django.shortcuts import render
 from django.template import context
 from django.views.generic import ListView,DetailView
-from store.models import Product, ProductImages
+from store.models import Product, ProductImages, BannerImage
 
 
 class ProductListView(ListView):
     model = Product
     template_name = 'store/index.html'
     context_object_name = 'products'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bannerimage']= BannerImage.objects.filter(is_active=True).order_by('-id')
+        return context
     
 
 class Product_Details(DetailView):
