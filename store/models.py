@@ -1,11 +1,7 @@
-from distutils.command.upload import upload
-from email.mime import image
-from operator import truediv
-from random import choices, randint
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
-import random
+from django.contrib.auth import get_user_model
 
 # Create your models here.
 
@@ -93,5 +89,26 @@ class BannerImage(models.Model):
 
     def __str__(self):
         return self.product.name
+
+
+User = get_user_model()
+class LogoInfo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='Logo')
+    is_active = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.image)
+
+class favicon(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='Logo')
+    is_active = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.image)
+
 
 

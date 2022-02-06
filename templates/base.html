@@ -3,6 +3,7 @@
     {% load static %}
     {% load category %}
     {% load cart %}
+    {% load logoinfo %}
 <!-- molla/index-4.html  22 Nov 2019 09:53:08 GMT -->
 <head>
     <meta charset="UTF-8">
@@ -14,8 +15,8 @@
     <meta name="author" content="p-themes">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/images/icons/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/images/icons/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/icons/favicon-16x16.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{request.user|faviconInfo}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{request.user|faviconInfo}}">
     <link rel="manifest" href="{% static 'assets/images/icons/site.html' %}">
     <link rel="mask-icon" href="{% static 'assets/images/icons/safari-pinned-tab.svg" color="#666666">
     <link rel="shortcut icon" href="{% static 'assets/images/icons/favicon.ico">
@@ -92,7 +93,7 @@
                         </button>
                         
                         <a href="index.html" class="logo">
-                            <img src="{% static 'assets/images/demos/demo-4/logo.png'%}" alt="Molla Logo" width="105" height="25">
+                            <img src="{{request.user|logo}}" alt="Molla Logo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
 
