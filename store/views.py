@@ -37,6 +37,10 @@ class Product_Details(DetailView):
         context['product_images']=ProductImages.objects.filter(product=self.object.id)
         return context
 
+def SearchProduct(request):
+    search = request.GET['search_item']
+    products = Product.objects.filter(name__icontains=search).order_by('-id')
+    return render(request,'store/search.html',{'products':products})
     
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
