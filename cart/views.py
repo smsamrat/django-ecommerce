@@ -33,6 +33,9 @@ def add_to_cart(request, pk):
             size = request.POST.get('size')
             cart_order_item[0].color = color
             cart_order_item[0].size = size
+            quantity = request.POST.get('quantity')
+            cart_order_item[0].quantity = int(quantity)
+            cart_order_item[0].save()
             orders.orders_item.add(cart_order_item[0])
             return redirect('index')
     else:
