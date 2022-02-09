@@ -1,10 +1,15 @@
 
+from urllib import request
 from django.forms import forms
 from django.http import HttpResponse
 from django.shortcuts import render
 from account.forms import RegistrationForm
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
+from cart.models import Cart, order
+from account.models import Profile
+from payment.models import BillingAddress
 
 
 
@@ -43,3 +48,19 @@ def loginForm(request):
                 
     return render(request,'login.html')
 
+# Profile information
+class ProfileInfo(TemplateView):
+    def get(self, request, *args, **kwargs):
+        products = order.objects.filter(user=request.user, ordered=True)
+        cart_products = Cart.objects.filter(user=request.user, purchased=True)
+        context ={
+            'products':products,
+            'cart_products':cart_products
+        }
+        return render(request, 'profile.html',context)
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+    # def profileView(request,pk):
+    #     item= get_
